@@ -118,22 +118,31 @@ fun HomeScreen(navController: NavController) {
                 .semantics { contentDescription = "Message input field" }
         )
 
+        Spacer(modifier = Modifier.height(24.dp))
+
         Button(
             onClick = {
                 selectedMessage = userInput.text
                 keyboardController?.hide()
             },
             modifier = Modifier
-                .padding(vertical = 8.dp)
+                .fillMaxWidth()
+                .height(64.dp)
                 .semantics { contentDescription = "Show message button" }
         ) {
-            Text("Show Message")
+            Text(
+                "Show Message", style = TextStyle(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            )
         }
 
         if (selectedMessage.isNotEmpty()) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .height(200.dp)
                     .padding(top = 16.dp)
                     .border(
                         2.dp,
@@ -159,7 +168,7 @@ fun HomeScreen(navController: NavController) {
                     Text(
                         text = selectedMessage,
                         style = TextStyle(
-                            fontSize = 24.sp,
+                            fontSize = 32.sp,
                             fontWeight = FontWeight.Normal,
                             color = Color.DarkGray
                         )
@@ -168,25 +177,29 @@ fun HomeScreen(navController: NavController) {
             }
         }
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-                .padding(top = 16.dp)
+
         ) {
             items(defaultMessages) { message ->
                 Button(
                     onClick = { selectedMessage = message },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 4.dp)
+                        .height(64.dp)
                         .semantics { contentDescription = "Select $message" },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
                 ) {
-                    Text(message)
+                    Text(text = message, style = TextStyle(
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
+                    ) )
                 }
+                Spacer(modifier = Modifier.height(8.dp))
             }
         }
 
@@ -195,6 +208,7 @@ fun HomeScreen(navController: NavController) {
                 onDismissRequest = { showDialog = false },
                 title = { Text("Confirm Logout") },
                 text = { Text("Are you sure you want to log out?") },
+
                 confirmButton = {
                     Button(
                         onClick = {

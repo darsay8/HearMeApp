@@ -7,7 +7,7 @@ object UserRepository {
     private var currentUser: User? = null
 
     init {
-        users.add(User("user", "user@mail.com", "password123"))
+        users.add(User("user", "user@mail.com", "123456"))
         users.add(User("john_doe", "john@example.com", "password123"))
         users.add(User("jane_smith", "jane@example.com", "securePass456"))
         users.add(User("alice_johnson", "alice@example.com", "alicePass789"))
