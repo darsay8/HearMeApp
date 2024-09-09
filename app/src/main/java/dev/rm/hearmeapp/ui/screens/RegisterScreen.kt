@@ -54,7 +54,11 @@ fun RegisterScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Text("Register", style = MaterialTheme.typography.headlineLarge, color = MaterialTheme.colorScheme.secondary)
+        Text(
+            "Register",
+            style = MaterialTheme.typography.headlineLarge,
+            color = MaterialTheme.colorScheme.secondary
+        )
 
         Spacer(modifier = Modifier.height(32.dp))
 
@@ -136,7 +140,8 @@ fun RegisterScreen(navController: NavController) {
                     errorMessage = "Passwords do not match"
                 } else {
                     isLoading = true
-                    val registrationSuccess = UserRepository.registerUser(User(username, email, password))
+                    val registrationSuccess =
+                        UserRepository.registerUser(User(username, email, password))
                     isLoading = false
                     if (registrationSuccess) {
                         navController.navigate("home")
@@ -146,7 +151,9 @@ fun RegisterScreen(navController: NavController) {
                 }
                 keyboardController?.hide()
             },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(64.dp),
             enabled = !isLoading
         ) {
             if (isLoading) {

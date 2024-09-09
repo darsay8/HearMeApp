@@ -49,7 +49,11 @@ fun PasswordRecoveryScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Text("Password Recovery", style = MaterialTheme.typography.headlineLarge, color = MaterialTheme.colorScheme.secondary)
+        Text(
+            "Password Recovery",
+            style = MaterialTheme.typography.headlineLarge,
+            color = MaterialTheme.colorScheme.secondary
+        )
 
         Spacer(modifier = Modifier.height(32.dp))
 
@@ -87,7 +91,9 @@ fun PasswordRecoveryScreen(navController: NavController) {
                 }
                 keyboardController?.hide()
             },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(64.dp),
             enabled = !isLoading
         ) {
             if (isLoading) {
