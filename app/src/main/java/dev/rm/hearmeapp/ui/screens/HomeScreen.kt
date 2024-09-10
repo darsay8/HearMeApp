@@ -194,10 +194,12 @@ fun HomeScreen(navController: NavController) {
                         .semantics { contentDescription = "Select $message" },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
                 ) {
-                    Text(text = message, style = TextStyle(
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
-                    ) )
+                    Text(
+                        text = message, style = TextStyle(
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
                 }
                 Spacer(modifier = Modifier.height(8.dp))
             }
@@ -207,7 +209,12 @@ fun HomeScreen(navController: NavController) {
             AlertDialog(
                 onDismissRequest = { showDialog = false },
                 title = { Text("Confirm Logout") },
-                text = { Text("Are you sure you want to log out?") },
+                text = {
+                    Text(
+                        "Are you sure you want to log out?",
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                },
 
                 confirmButton = {
                     Button(
@@ -219,7 +226,12 @@ fun HomeScreen(navController: NavController) {
                             showDialog = false
                         }
                     ) {
-                        Text("Yes")
+                        Text(
+                            "Yes", style = TextStyle(
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        )
                     }
                 },
                 dismissButton = {
@@ -227,7 +239,12 @@ fun HomeScreen(navController: NavController) {
                         onClick = { showDialog = false },
                         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
                     ) {
-                        Text("No")
+                        Text(
+                            "No", style = TextStyle(
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        )
                     }
                 }
             )
