@@ -96,7 +96,7 @@ fun LoginScreen(navController: NavController) {
                 Text(
                     text = errorMessage!!,
                     color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.bodySmall
+                    style = MaterialTheme.typography.bodyLarge
                 )
 
                 Spacer(modifier = Modifier.height(4.dp))
@@ -104,7 +104,7 @@ fun LoginScreen(navController: NavController) {
                 TextButton(
                     onClick = { navController.navigate("password_recovery") },
                 ) {
-                    Text("Forgot your password?")
+                    Text("Forgot your password?", style = MaterialTheme.typography.bodyLarge)
                 }
             }
 
@@ -156,14 +156,14 @@ fun LoginScreen(navController: NavController) {
             }
         }
 
+        Spacer(modifier = Modifier.height(16.dp))
+
         TextButton(
             onClick = { navController.navigate("register") },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Don't have an account? Register")
+            Text("Don't have an account? Register", style = MaterialTheme.typography.bodyLarge)
         }
-
-        Spacer(modifier = Modifier.height(24.dp))
 
     }
 }
