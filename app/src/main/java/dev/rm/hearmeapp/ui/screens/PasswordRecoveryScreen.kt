@@ -27,9 +27,13 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import dev.rm.hearmeapp.vm.AuthViewModel
 
 @Composable
-fun PasswordRecoveryScreen(navController: NavController) {
+fun PasswordRecoveryScreen(
+    navController: NavController,
+    authViewModel: AuthViewModel
+) {
     var email by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
     var message by remember { mutableStateOf<String?>(null) }

@@ -1,38 +1,78 @@
 package dev.rm.hearmeapp.data.repository
 
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import dev.rm.hearmeapp.data.model.User
+import org.mindrot.jbcrypt.BCrypt
 
-object UserRepository {
-    private val users = mutableListOf<User>()
-    private var currentUser: User? = null
+class UserRepository {
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val database: DatabaseReference = FirebaseDatabase.getInstance().getReference("users")
 
-    init {
-        users.add(User("user", "user@mail.com", "123456"))
-        users.add(User("john_doe", "john@example.com", "password123"))
-        users.add(User("jane_smith", "jane@example.com", "securePass456"))
-        users.add(User("alice_johnson", "alice@example.com", "alicePass789"))
-        users.add(User("bob_brown", "bob@example.com", "bobPassword101"))
-        users.add(User("charlie_davis", "charlie@example.com", "charlie123"))
-    }
-
-    fun registerUser(user: User): Boolean {
-
-        if (users.any { it.username == user.username || it.email == user.email }) {
-            return false
+    fun registerUser(
+        username: String,
+        email: String,
+        password: String,
+        onComplete: (FirebaseUser?, Exception?) -> Unit
+    ) {
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val user = auth.currentUser
+                val profileUpdates =
+                    UserProfileChangeRequest.Builder().setDisplayName(username).build()
+                user?.updateProfile(profileUpdates)?.addOnCompleteListener { profileUpdateTask ->
+                    if (profileUpdateTask.isSuccessful) {
+                        saveUserToDatabase(
+                            User(username, email, hashPassword(password)),
+                            onComplete
+                        )
+                    } else {
+                        onComplete(null, profileUpdateTask.exception)
+                    }
+                }
+            } else {
+                onComplete(null, task.exception)
+            }
         }
-        users.add(user)
-        return true
     }
 
-    fun authenticateUser(username: String, password: String): Boolean {
-        val user = users.find { it.username == username && it.password == password }
-        currentUser = user
-        return user != null
+    private fun saveUserToDatabase(user: User, onComplete: (FirebaseUser?, Exception?) -> Unit) {
+        val userId = auth.currentUser?.uid ?: return
+        database.child(userId).setValue(user).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                onComplete(auth.currentUser, null)
+            } else {
+                onComplete(null, task.exception)
+            }
+        }
     }
 
-    fun getCurrentUser(): User? = currentUser
+    fun loginUser(
+        email: String,
+        password: String,
+        onComplete: (FirebaseUser?, Exception?) -> Unit
+    ) {
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                onComplete(auth.currentUser, null)
+            } else {
+                onComplete(null, task.exception)
+            }
+        }
+    }
 
-    fun clearSession() {
-        currentUser = null
+    fun logoutUser() {
+        auth.signOut()
+    }
+
+    fun getCurrentUser(): FirebaseUser? {
+        return auth.currentUser
+    }
+
+    private fun hashPassword(password: String): String {
+        return BCrypt.hashpw(password, BCrypt.gensalt())
     }
 }

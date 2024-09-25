@@ -2,46 +2,66 @@ package dev.rm.hearmeapp.ui.screens
 
 import android.content.Context
 import android.os.Vibrator
+import android.widget.Toast
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExitToApp
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Divider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.navigation.NavController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import dev.rm.hearmeapp.data.repository.UserRepository
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+
+import dev.rm.hearmeapp.vm.AuthState
+import dev.rm.hearmeapp.vm.AuthViewModel
+import dev.rm.hearmeapp.vm.MessageState
+import dev.rm.hearmeapp.vm.MessageViewModel
+
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(
+    navController: NavController,
+    authViewModel: AuthViewModel,
+    messageViewModel: MessageViewModel = viewModel()
+) {
+
+    val authState = authViewModel.authState.observeAsState()
+    val messageState by messageViewModel.messageState.observeAsState()
+
+    LaunchedEffect(authState.value) {
+        when (authState.value) {
+            is AuthState.Unauthenticated -> navController.navigate("login")
+            else -> Unit
+        }
+    }
+
     var userInput by remember { mutableStateOf(TextFieldValue()) }
     var selectedMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
 
-    val user = UserRepository.getCurrentUser()
-    val username = user?.username ?: "User"
+    val (username, email) = authViewModel.getCurrentUserInfo()
+    val words = username?.split(' ');
+    val name =
+        words?.joinToString(separator = "_") { word -> word.replaceFirstChar { it.uppercase() } }
+
 
     val keyboardController = LocalSoftwareKeyboardController.current
     val context = LocalContext.current
@@ -54,6 +74,26 @@ fun HomeScreen(navController: NavController) {
         "Please help! 🆘",
         "I need assistance. 🆘"
     )
+
+    LaunchedEffect(messageState) {
+        when (messageState) {
+            is MessageState.Loading -> {
+                // Optionally show loading state
+            }
+
+            is MessageState.SavedToDB -> {
+                Toast.makeText(context, "Message saved!", Toast.LENGTH_SHORT).show()
+//                userInput = TextFieldValue("")
+            }
+
+            is MessageState.Error -> {
+                val errorMessage = (messageState as MessageState.Error).message
+                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+            }
+
+            else -> Unit
+        }
+    }
 
 
     Column(
@@ -102,7 +142,7 @@ fun HomeScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = "Welcome back, $username!",
+            text = "Welcome back, ${name}!",
             style = MaterialTheme.typography.titleLarge,
         )
 
@@ -123,6 +163,7 @@ fun HomeScreen(navController: NavController) {
         Button(
             onClick = {
                 selectedMessage = userInput.text
+                messageViewModel.saveMessage(userInput.text)
                 keyboardController?.hide()
             },
             modifier = Modifier
@@ -194,10 +235,12 @@ fun HomeScreen(navController: NavController) {
                         .semantics { contentDescription = "Select $message" },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
                 ) {
-                    Text(text = message, style = TextStyle(
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
-                    ) )
+                    Text(
+                        text = message, style = TextStyle(
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
                 }
                 Spacer(modifier = Modifier.height(8.dp))
             }
@@ -212,10 +255,7 @@ fun HomeScreen(navController: NavController) {
                 confirmButton = {
                     Button(
                         onClick = {
-                            UserRepository.clearSession()
-                            navController.navigate("login") {
-                                popUpTo("home") { inclusive = true }
-                            }
+                            authViewModel.logout()
                             showDialog = false
                         }
                     ) {
