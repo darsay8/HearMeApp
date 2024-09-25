@@ -250,7 +250,12 @@ fun HomeScreen(
             AlertDialog(
                 onDismissRequest = { showDialog = false },
                 title = { Text("Confirm Logout") },
-                text = { Text("Are you sure you want to log out?") },
+                text = {
+                    Text(
+                        "Are you sure you want to log out?",
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                },
 
                 confirmButton = {
                     Button(
@@ -259,7 +264,12 @@ fun HomeScreen(
                             showDialog = false
                         }
                     ) {
-                        Text("Yes")
+                        Text(
+                            "Yes", style = TextStyle(
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        )
                     }
                 },
                 dismissButton = {
@@ -267,7 +277,12 @@ fun HomeScreen(
                         onClick = { showDialog = false },
                         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
                     ) {
-                        Text("No")
+                        Text(
+                            "No", style = TextStyle(
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        )
                     }
                 }
             )

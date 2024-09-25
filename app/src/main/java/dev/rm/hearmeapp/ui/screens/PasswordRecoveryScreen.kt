@@ -24,8 +24,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import dev.rm.hearmeapp.vm.AuthViewModel
 
@@ -82,7 +85,7 @@ fun PasswordRecoveryScreen(
             )
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+//        Spacer(modifier = Modifier.height(24.dp))
 
         Button(
             onClick = {
@@ -106,19 +109,29 @@ fun PasswordRecoveryScreen(
                     modifier = Modifier.size(16.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Sending...")
+                Text(
+                    "Sending...", style = TextStyle(
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                )
             } else {
-                Text("Send Recovery Link")
+                Text(
+                    "Send Recovery Link", style = TextStyle(
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                )
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         TextButton(
             onClick = { navController.navigate("login") },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Back to Login")
+            Text("Back to Login", style = MaterialTheme.typography.bodyLarge)
         }
     }
 }
