@@ -119,6 +119,12 @@ fun HomeScreen(
 
             )
 
+            Button(onClick = {
+                navController.navigate("location")
+            }) {
+                Text("📍")
+            }
+
             Button(
                 onClick = {
                     vibrator.vibrate(100) // Vibrate for 100 milliseconds

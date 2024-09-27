@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
     id("com.google.gms.google-services")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+
 }
 
 android {
@@ -20,6 +22,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+
     }
 
     buildTypes {
@@ -51,6 +55,13 @@ android {
     }
 }
 
+secrets {
+    propertiesFileName = "secrets.properties"
+    defaultPropertiesFileName = "local.defaults.properties"
+    ignoreList.add("keyToIgnore")
+    ignoreList.add("sdk.*")
+}
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -73,14 +84,26 @@ dependencies {
 
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
-    implementation("io.coil-kt:coil:2.7.0")
 
-    implementation ("androidx.compose.runtime:runtime-livedata:1.4.0")
+    implementation("androidx.compose.runtime:runtime-livedata:1.4.0")
+
+
+    implementation("io.coil-kt:coil:2.7.0")
 
     // FIREBASE
     implementation(platform("com.google.firebase:firebase-bom:33.3.0"))
     implementation("com.google.firebase:firebase-database-ktx")
     implementation("com.google.firebase:firebase-auth-ktx")
 
+    // GOOGLE MAPS
+
+    implementation("com.google.accompanist:accompanist-permissions:0.36.0")
+    implementation("com.google.maps.android:maps-compose:6.1.0")
+    // Google Maps SDK
+    implementation("com.google.android.gms:play-services-maps:19.0.0")
+    // Location Services
+    implementation("com.google.android.gms:play-services-location:21.3.0")
+
+    // JUNIT
     implementation("org.mindrot:jbcrypt:0.4")
 }
