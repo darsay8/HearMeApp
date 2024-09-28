@@ -44,7 +44,8 @@ fun HomeScreen(
 ) {
 
     val authState = authViewModel.authState.observeAsState()
-    val messageState by messageViewModel.messageState.observeAsState()
+//    val messageState by messageViewModel.messageState.observeAsState()
+    val messageState by messageViewModel.messageState.collectAsState()
 
     LaunchedEffect(authState.value) {
         when (authState.value) {
@@ -125,21 +126,21 @@ fun HomeScreen(
                 Text("📍")
             }
 
-            Button(
-                onClick = {
-                    vibrator.vibrate(100) // Vibrate for 100 milliseconds
-                    showDialog = true
+            Button(onClick = {
+                navController.navigate("messages")
+            }) {
+                Text("📝")
+            }
 
-                },
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
-            ) {
+            Button(onClick = {
+                vibrator.vibrate(100) // Vibrate for 100 milliseconds
+                showDialog = true
+            }) {
                 Icon(
                     imageVector = Icons.Default.ExitToApp,
                     contentDescription = "Logout",
                     tint = MaterialTheme.colorScheme.onPrimary
                 )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Logout")
             }
         }
 

@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import dev.rm.hearmeapp.ui.screens.HomeScreen
 import dev.rm.hearmeapp.ui.screens.LocationScreen
 import dev.rm.hearmeapp.ui.screens.LoginScreen
+import dev.rm.hearmeapp.ui.screens.MessagesScreen
 import dev.rm.hearmeapp.ui.screens.PasswordRecoveryScreen
 import dev.rm.hearmeapp.ui.screens.RegisterScreen
 import dev.rm.hearmeapp.vm.AuthViewModel
@@ -33,6 +34,10 @@ fun AppNavigation(
 
         composable("location") {
             LocationScreen(navController, authViewModel)
+        }
+
+        composable("messages") {
+            MessagesScreen(navController, authViewModel)
         }
     })
 }
