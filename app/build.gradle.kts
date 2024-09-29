@@ -104,6 +104,18 @@ dependencies {
     // Location Services
     implementation("com.google.android.gms:play-services-location:21.3.0")
 
-    // JUNIT
+    // JBCRYPT
     implementation("org.mindrot:jbcrypt:0.4")
+
+    // TEST
+    testImplementation("androidx.arch.core:core-testing:2.1.0")
+    testImplementation("junit:junit:4.13.2")
+
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+    testImplementation("org.mockito:mockito-core:3.12.4")
+    testImplementation ("org.mockito:mockito-inline:4.0.0")
+    testImplementation ("org.mockito.kotlin:mockito-kotlin:4.0.0")
+
+
+
 }

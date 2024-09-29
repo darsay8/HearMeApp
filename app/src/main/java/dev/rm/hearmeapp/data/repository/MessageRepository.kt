@@ -6,10 +6,10 @@ import com.google.firebase.database.FirebaseDatabase
 import dev.rm.hearmeapp.data.model.Message
 import kotlinx.coroutines.tasks.await
 
-class MessageRepository {
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val database: DatabaseReference =
-        FirebaseDatabase.getInstance().getReference("messages")
+class MessageRepository(
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
+    private val database: DatabaseReference = FirebaseDatabase.getInstance().getReference("messages")
+) {
 
     suspend fun saveMessage(text: String): Boolean {
         val userId = auth.currentUser?.uid ?: throw Exception("User not authenticated")
