@@ -35,7 +35,6 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 
-
 @Composable
 fun MessagesScreen(
     navController: NavController,
@@ -103,10 +102,13 @@ fun MessagesScreen(
                     Text(text = "🏠")
                 }
 
-                Button(onClick = {
-                    vibrator.vibrate(100) // Vibrate for 100 milliseconds
-                    showDialog = true
-                }) {
+                Button(
+                    onClick = {
+                        vibrator.vibrate(100) // Vibrate for 100 milliseconds
+                        showDialog = true
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                ) {
                     Icon(
                         imageVector = Icons.Default.ExitToApp,
                         contentDescription = "Logout",
@@ -213,7 +215,7 @@ fun MessageItem(
     message: Message,
     onDelete: () -> Unit
 ) {
-    val dateFormat = SimpleDateFormat("dd/MM/yy HH:mm" , Locale.getDefault())
+    val dateFormat = SimpleDateFormat("dd/MM/yy HH:mm", Locale.getDefault())
     val formattedDate = dateFormat.format(message.date)
 
     Card(

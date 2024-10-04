@@ -121,10 +121,13 @@ fun LocationScreen(
                     Text("📝")
                 }
 
-                Button(onClick = {
-                    vibrator.vibrate(100) // Vibrate for 100 milliseconds
-                    showDialog = true
-                }) {
+                Button(
+                    onClick = {
+                        vibrator.vibrate(100) // Vibrate for 100 milliseconds
+                        showDialog = true
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                ) {
                     Icon(
                         imageVector = Icons.Default.ExitToApp,
                         contentDescription = "Logout",
@@ -192,41 +195,7 @@ fun LocationScreen(
                                 rotation = 0.0f
                             )
                         }
-
-//                        Box(
-//                            modifier = Modifier
-//                                .align(Alignment.TopEnd)  // Align within the parent Box
-//                                .padding(16.dp)
-//                        ) {
-//                            Box(
-//                                modifier = Modifier
-//                                    .size(56.dp)
-//                                    .clip(CircleShape)
-//                                    .background(Color.White.copy(alpha = 0.6f))
-//                                    .clickable {
-//                                        val shareText = locationViewModel.getShareableLocation()
-//                                        val shareIntent = Intent().apply {
-//                                            action = Intent.ACTION_SEND
-//                                            putExtra(Intent.EXTRA_TEXT, shareText)
-//                                            type = "text/plain"
-//                                        }
-//                                        context.startActivity(
-//                                            Intent.createChooser(
-//                                                shareIntent,
-//                                                "Share Location"
-//                                            )
-//                                        )
-//                                    },
-//                                contentAlignment = Alignment.Center // Center the content
-//                            ) {
-//                                Icon(
-//                                    imageVector = Icons.Default.Share,
-//                                    contentDescription = "Share Location",
-//                                    tint = Color.Gray
-//
-//                                )
-//                            }
-//                        }
+                        
                         IconButton(
                             onClick = {
                                 val shareText = locationViewModel.getShareableLocation()

@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dev.rm.hearmeapp.data.repository.UserRepository
 
-class AuthViewModel(private val userRepository: UserRepository) : ViewModel() {
+class AuthViewModel() : ViewModel() {
+
+    private val userRepository = UserRepository()
 
     private val _authState = MutableLiveData<AuthState>()
     val authState: LiveData<AuthState> = _authState

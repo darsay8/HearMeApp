@@ -10,6 +10,7 @@ import dev.rm.hearmeapp.ui.screens.LoginScreen
 import dev.rm.hearmeapp.ui.screens.MessagesScreen
 import dev.rm.hearmeapp.ui.screens.PasswordRecoveryScreen
 import dev.rm.hearmeapp.ui.screens.RegisterScreen
+import dev.rm.hearmeapp.ui.screens.SpeechRecognitionScreen
 import dev.rm.hearmeapp.vm.AuthViewModel
 
 @Composable
@@ -38,6 +39,10 @@ fun AppNavigation(
 
         composable("messages") {
             MessagesScreen(navController, authViewModel)
+        }
+
+        composable("speech_recognition") {
+            SpeechRecognitionScreen(navController, authViewModel)
         }
     })
 }
