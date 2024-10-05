@@ -11,9 +11,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
 import dev.rm.hearmeapp.vm.AuthState
@@ -21,8 +24,7 @@ import dev.rm.hearmeapp.vm.AuthViewModel
 
 @Composable
 fun LoginScreen(
-    navController: NavController,
-    authViewModel: AuthViewModel
+    navController: NavController, authViewModel: AuthViewModel
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -35,8 +37,7 @@ fun LoginScreen(
         when (authState.value) {
             is AuthState.Authenticated -> navController.navigate("home")
             is AuthState.Error -> Toast.makeText(
-                context,
-                (authState.value as AuthState.Error).message, Toast.LENGTH_SHORT
+                context, (authState.value as AuthState.Error).message, Toast.LENGTH_SHORT
             ).show()
 
             else -> Unit
@@ -93,23 +94,33 @@ fun LoginScreen(
             onClick = {
                 authViewModel.login(email, password)
             },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(64.dp),
             enabled = authState.value != AuthState.Loading
         ) {
-            Text(text = "Login")
+            Text(
+                text = "Login", style = TextStyle(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            )
         }
 
         TextButton(
-            onClick = { navController.navigate("register") },
-            modifier = Modifier.fillMaxWidth()
+            onClick = { navController.navigate("register") }, modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Don't have an account? Register")
+            Text("Don't have an account? Register", style = MaterialTheme.typography.bodyLarge)
         }
 
         TextButton(
             onClick = { navController.navigate("password_recovery") },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Forgot your password? Click here to reset it.")
+            Text(
+                "Forgot your password? Click here to reset it.",
+                style = MaterialTheme.typography.bodyLarge
+            )
         }
 
         Spacer(modifier = Modifier.height(24.dp))

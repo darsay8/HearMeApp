@@ -14,6 +14,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
 import dev.rm.hearmeapp.vm.AuthViewModel
@@ -109,16 +112,24 @@ fun RegisterScreen(
         Button(
             onClick = {
                 authViewModel.register(username, email, password)
-            }, enabled = authState.value != AuthState.Loading
+            }, modifier = Modifier
+                .fillMaxWidth()
+                .height(64.dp),
+            enabled = authState.value != AuthState.Loading
         ) {
-            Text(text = "Create account")
+            Text(
+                text = "Create account", style = TextStyle(
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            )
         }
 
         TextButton(
             onClick = { navController.navigate("login") },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Already have an account? Login")
+            Text("Already have an account? Login", style = MaterialTheme.typography.bodyLarge)
         }
     }
 
